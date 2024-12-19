@@ -46,24 +46,13 @@ let
   defaultVencord = applyPostPatch (
     pkgs.callPackage (if cfg.discord.vencord.unstable then ./vencord-unstable.nix else ./vencord.nix) (
       {
-        inherit (pkgs)
-          esbuild
-          fetchFromGitHub
-          git
-          lib
-          nodejs
-          pnpm
-          stdenv
-          ;
-        buildWebExtension = false;
+        unstable = true;
       }
       // lib.optionalAttrs (!cfg.discord.vencord.unstable) {
-        inherit (pkgs)
-          writeShellScript
-          nix-update
-          jq
-          curl
-          ;
+        unstable = false;
+      }
+      // {
+        buildWebExtension = false;
       }
     )
   );
